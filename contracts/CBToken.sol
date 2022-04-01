@@ -21,4 +21,8 @@ contract CBToken is ERC20 {
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
+
+    function burn(address to, uint256 amount) external onlyOwner {
+        _burn(to, amount);
+    }
 }
