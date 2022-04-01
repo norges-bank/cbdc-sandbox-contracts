@@ -17,4 +17,8 @@ contract CBToken is ERC20 {
         owner = msg.sender;
         _mint(msg.sender, 1_000_000 * (10**decimals()));
     }
+   
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
 }
