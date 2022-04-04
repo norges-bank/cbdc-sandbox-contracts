@@ -18,10 +18,10 @@ describe("CBToken", function () {
 
   let token: Contract;
   let owner: SignerWithAddress;
-  let address1: SignerWithAddress;
+  let accountOne: SignerWithAddress;
 
   before(async () => {
-    [owner, address1] = await ethers.getSigners();
+    [owner, accountOne] = await ethers.getSigners();
 
     const CBToken = await ethers.getContractFactory("CBToken");
     token = await CBToken.deploy(NAME, SYMBOL, DECIMALS);
@@ -32,7 +32,7 @@ describe("CBToken", function () {
   describe("Deployment", async () => {
     it("Should set the correct owner", async () => {
       expect(await token.owner()).to.equal(owner.address);
-      expect(await token.owner()).to.not.equal(address1.address);
+      expect(await token.owner()).to.not.equal(accountOne.address);
     });
 
     it("Should return the correct number of decimals", async () => {
@@ -50,21 +50,21 @@ describe("CBToken", function () {
       expect(await token.balanceOf(owner.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
-      expect(await token.balanceOf(address1.address)).to.equal(0);
+      expect(await token.balanceOf(accountOne.address)).to.equal(0);
 
-      await token.mint(address1.address, MINTED_TOKENS);
+      await token.mint(accountOne.address, MINTED_TOKENS);
 
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
       expect(await token.balanceOf(owner.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
-      expect(await token.balanceOf(address1.address)).to.equal(MINTED_TOKENS);
+      expect(await token.balanceOf(accountOne.address)).to.equal(MINTED_TOKENS);
     });
 
     it("Should not allow other addresses to mint more tokens", async () => {
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
       await expect(
-        token.connect(address1).mint(address1.address, MINTED_TOKENS)
+        token.connect(accountOne).mint(accountOne.address, MINTED_TOKENS)
       ).to.be.reverted;
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
     });
