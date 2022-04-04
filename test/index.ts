@@ -69,4 +69,22 @@ describe("CBToken", function () {
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
     });
   });
+
+  describe("Burning", async () => {
+    it("Should allow the owner to burn tokens", async () => {
+      expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+      expect(await token.balanceOf(owner.address)).to.equal(
+        INITIAL_TOTAL_SUPPLY
+      );
+      expect(await token.balanceOf(accountOne.address)).to.equal(MINTED_TOKENS);
+
+      await token.burn(accountOne.address, MINTED_TOKENS);
+
+      expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+      expect(await token.balanceOf(owner.address)).to.equal(
+        INITIAL_TOTAL_SUPPLY
+      );
+      expect(await token.balanceOf(accountOne.address)).to.equal(0);
+    });
+  });
 });
