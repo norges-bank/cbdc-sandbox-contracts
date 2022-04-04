@@ -1,19 +1,35 @@
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
+import { Contract } from "ethers";
 import { ethers } from "hardhat";
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("CBToken", function () {
+  const name = "Bergen";
+  const symbol = "BRG";
+  const decimals = 6;
+  const TOTAL_SUPPLY_DECIMAL = "0".repeat(decimals);
+  const INITIAL_TOTAL_SUPPLY = "1000000".concat(TOTAL_SUPPLY_DECIMAL);
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  let token: Contract;
+  let owner: SignerWithAddress;
+  let address1: SignerWithAddress;
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+  before(async () => {
+    [owner, address1] = await ethers.getSigners();
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    const CBToken = await ethers.getContractFactory("CBToken");
+    token = await CBToken.deploy(name, symbol, decimals);
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    await token.deployed();
+  });
+
+  it("Should return the correct number of decimals", async () => {
+    expect(await token.decimals()).to.equal(decimals);
+  });
+
+  it("Should return the correct total supply", async () => {
+    expect(await token.totalSupply()).to.equal(
+      ethers.BigNumber.from(INITIAL_TOTAL_SUPPLY)
+    );
   });
 });
