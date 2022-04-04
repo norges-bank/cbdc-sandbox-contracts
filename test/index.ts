@@ -30,6 +30,11 @@ describe("CBToken", function () {
   });
 
   describe("Deployment", async () => {
+    it("Should set the correct owner", async () => {
+      expect(await token.owner()).to.equal(owner.address);
+      expect(await token.owner()).to.not.equal(address1.address);
+    });
+
     it("Should return the correct number of decimals", async () => {
       expect(await token.decimals()).to.equal(DECIMALS);
     });
