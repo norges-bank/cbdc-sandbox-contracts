@@ -86,5 +86,18 @@ describe("CBToken", function () {
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(0);
     });
+
+    it("Should not allow others to burn tokens", async () => {
+      expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+
+      await expect(
+        token.connect(accountOne).burn(owner.address, MINTED_TOKENS)
+      ).to.be.revertedWith("Only owner");
+      await expect(
+        token.connect(accountOne).burn(accountOne.address, MINTED_TOKENS)
+      ).to.be.revertedWith("Only owner");
+
+      expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+    });
   });
 });
