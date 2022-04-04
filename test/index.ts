@@ -29,30 +29,39 @@ describe("CBToken", function () {
     await token.deployed();
   });
 
-  it("Should return the correct number of decimals", async () => {
-    expect(await token.decimals()).to.equal(DECIMALS);
+  describe("Deployment", async () => {
+    it("Should return the correct number of decimals", async () => {
+      expect(await token.decimals()).to.equal(DECIMALS);
+    });
+
+    it("Should return the correct total supply", async () => {
+      expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+    });
   });
 
-  it("Should return the correct total supply", async () => {
-    expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
-  });
+  describe("Minting", async () => {
+    it("Should allow the owner to mint more tokens", async () => {
+      expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+      expect(await token.balanceOf(owner.address)).to.equal(
+        INITIAL_TOTAL_SUPPLY
+      );
+      expect(await token.balanceOf(address1.address)).to.equal(0);
 
-  it("Should allow the owner to mint more tokens", async () => {
-    expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
-    expect(await token.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY);
-    expect(await token.balanceOf(address1.address)).to.equal(0);
+      await token.mint(address1.address, MINTED_TOKENS);
 
-    await token.mint(address1.address, MINTED_TOKENS);
+      expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+      expect(await token.balanceOf(owner.address)).to.equal(
+        INITIAL_TOTAL_SUPPLY
+      );
+      expect(await token.balanceOf(address1.address)).to.equal(MINTED_TOKENS);
+    });
 
-    expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
-    expect(await token.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY);
-    expect(await token.balanceOf(address1.address)).to.equal(MINTED_TOKENS);
-  });
-
-  it("Should not allow other addresses to mint more tokens", async () => {
-    expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
-    await expect(token.connect(address1).mint(address1.address, MINTED_TOKENS))
-      .to.be.reverted;
-    expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+    it("Should not allow other addresses to mint more tokens", async () => {
+      expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+      await expect(
+        token.connect(address1).mint(address1.address, MINTED_TOKENS)
+      ).to.be.reverted;
+      expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+    });
   });
 });
