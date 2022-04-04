@@ -63,9 +63,11 @@ describe("CBToken", function () {
 
     it("Should not allow other addresses to mint more tokens", async () => {
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+
       await expect(
         token.connect(accountOne).mint(accountOne.address, MINTED_TOKENS)
-      ).to.be.reverted;
+      ).to.be.revertedWith("Only owner");
+
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
     });
   });
