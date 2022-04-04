@@ -4,10 +4,10 @@ import { Contract } from "ethers";
 import { ethers } from "hardhat";
 
 describe("CBToken", function () {
-  const name = "Bergen";
-  const symbol = "BRG";
-  const decimals = 6;
-  const TOTAL_SUPPLY_DECIMAL = "0".repeat(decimals);
+  const NAME = "Bergen";
+  const SYMBOL = "BRG";
+  const DECIMALS = 6;
+  const TOTAL_SUPPLY_DECIMAL = "0".repeat(DECIMALS);
   const INITIAL_TOTAL_SUPPLY = "1000000".concat(TOTAL_SUPPLY_DECIMAL);
 
   let token: Contract;
@@ -18,13 +18,13 @@ describe("CBToken", function () {
     [owner, address1] = await ethers.getSigners();
 
     const CBToken = await ethers.getContractFactory("CBToken");
-    token = await CBToken.deploy(name, symbol, decimals);
+    token = await CBToken.deploy(NAME, SYMBOL, DECIMALS);
 
     await token.deployed();
   });
 
   it("Should return the correct number of decimals", async () => {
-    expect(await token.decimals()).to.equal(decimals);
+    expect(await token.decimals()).to.equal(DECIMALS);
   });
 
   it("Should return the correct total supply", async () => {
