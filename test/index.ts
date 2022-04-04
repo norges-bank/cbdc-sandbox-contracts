@@ -48,4 +48,11 @@ describe("CBToken", function () {
     expect(await token.balanceOf(owner.address)).to.equal(INITIAL_TOTAL_SUPPLY);
     expect(await token.balanceOf(address1.address)).to.equal(MINTED_TOKENS);
   });
+
+  it("Should not allow other addresses to mint more tokens", async () => {
+    expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+    await expect(token.connect(address1).mint(address1.address, MINTED_TOKENS))
+      .to.be.reverted;
+    expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
+  });
 });
