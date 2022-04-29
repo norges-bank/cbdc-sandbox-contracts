@@ -18,6 +18,7 @@ describe("CBToken", function () {
 
   const DEFAULT_ADMIN_ROLE =
     "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const MINTER_ROLE = ethers.utils.id("MINTER_ROLE");
 
   let token: Contract;
   let owner: SignerWithAddress;
@@ -52,12 +53,14 @@ describe("CBToken", function () {
   });
 
   describe("Minting", async () => {
-    it("Should allow the owner to mint more tokens", async () => {
+    it("Should allow accounts with the minter role to mint more tokens", async () => {
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
       expect(await token.balanceOf(owner.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(0);
+
+      expect(await token.hasRole(MINTER_ROLE, owner.address)).to.equal(true);
 
       await token.mint(accountOne.address, MINTED_TOKENS);
 
@@ -71,9 +74,13 @@ describe("CBToken", function () {
     it("Should not allow other addresses to mint more tokens", async () => {
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
 
+      expect(await token.hasRole(MINTER_ROLE, accountOne.address)).to.equal(
+        false
+      );
+
       await expect(
         token.connect(accountOne).mint(accountOne.address, MINTED_TOKENS)
-      ).to.be.revertedWith("Only owner");
+      ).to.be.revertedWith("AccessControl");
 
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
     });
