@@ -7,6 +7,7 @@ import "hardhat/console.sol";
 
 contract CBToken is ERC20, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     address public owner;
     uint8 private _decimals;
 
@@ -22,6 +23,7 @@ contract CBToken is ERC20, AccessControl {
         owner = msg.sender;
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
+        _grantRole(BURNER_ROLE, msg.sender);
         _decimals = decimals_;
         _mint(msg.sender, 1_000_000 * (10**decimals()));
     }
@@ -34,7 +36,7 @@ contract CBToken is ERC20, AccessControl {
         _mint(to, amount);
     }
 
-    function burn(address to, uint256 amount) external onlyOwner {
+    function burn(address to, uint256 amount) external onlyRole(BURNER_ROLE) {
         _burn(to, amount);
     }
 }
