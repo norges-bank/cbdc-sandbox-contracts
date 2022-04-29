@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "hardhat/console.sol";
 
 contract CBToken is ERC20, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -13,7 +12,6 @@ contract CBToken is ERC20, AccessControl {
     constructor(string memory name_, string memory symbol_, uint8 decimals_)
         ERC20(name_, symbol_)
     {
-        console.log("Deploying a token with the name '%s', symbol '%s' and '%s' decimals.", name_, symbol_, decimals_);
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _grantRole(BURNER_ROLE, msg.sender);
