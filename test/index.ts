@@ -18,6 +18,7 @@ describe("CBToken", function () {
 
   const DEFAULT_ADMIN_ROLE =
     "0x0000000000000000000000000000000000000000000000000000000000000000";
+  const BURNER_ROLE = ethers.utils.id("BURNER_ROLE");
   const MINTER_ROLE = ethers.utils.id("MINTER_ROLE");
 
   let token: Contract;
@@ -94,6 +95,8 @@ describe("CBToken", function () {
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(MINTED_TOKENS);
 
+      expect(await token.hasRole(BURNER_ROLE, owner.address)).to.equal(true);
+
       await token.burn(accountOne.address, MINTED_TOKENS);
 
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
@@ -106,12 +109,16 @@ describe("CBToken", function () {
     it("Should not allow others to burn tokens", async () => {
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
 
+      expect(await token.hasRole(BURNER_ROLE, accountOne.address)).to.equal(
+        false
+      );
+
       await expect(
         token.connect(accountOne).burn(owner.address, MINTED_TOKENS)
-      ).to.be.revertedWith("Only owner");
+      ).to.be.revertedWith("AccessControl");
       await expect(
         token.connect(accountOne).burn(accountOne.address, MINTED_TOKENS)
-      ).to.be.revertedWith("Only owner");
+      ).to.be.revertedWith("AccessControl");
 
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
     });
