@@ -22,11 +22,11 @@ describe("CBToken", function () {
   const MINTER_ROLE = ethers.utils.id("MINTER_ROLE");
 
   let token: Contract;
-  let owner: SignerWithAddress;
+  let admin: SignerWithAddress;
   let accountOne: SignerWithAddress;
 
   before(async () => {
-    [owner, accountOne] = await ethers.getSigners();
+    [admin, accountOne] = await ethers.getSigners();
 
     const CBToken = await ethers.getContractFactory("CBToken");
     token = await CBToken.deploy(NAME, SYMBOL, DECIMALS);
@@ -36,7 +36,7 @@ describe("CBToken", function () {
 
   describe("Deployment", async () => {
     it("Should set the correct admin", async () => {
-      expect(await token.hasRole(DEFAULT_ADMIN_ROLE, owner.address)).to.equal(
+      expect(await token.hasRole(DEFAULT_ADMIN_ROLE, admin.address)).to.equal(
         true
       );
       expect(
@@ -54,19 +54,19 @@ describe("CBToken", function () {
   });
 
   describe("Minting", async () => {
-    it("Should allow accounts with the minter role to mint more tokens", async () => {
+    it("Should allow accounts with the minter role to mint tokens", async () => {
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
-      expect(await token.balanceOf(owner.address)).to.equal(
+      expect(await token.balanceOf(admin.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(0);
 
-      expect(await token.hasRole(MINTER_ROLE, owner.address)).to.equal(true);
+      expect(await token.hasRole(MINTER_ROLE, admin.address)).to.equal(true);
 
       await token.mint(accountOne.address, MINTED_TOKENS);
 
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
-      expect(await token.balanceOf(owner.address)).to.equal(
+      expect(await token.balanceOf(admin.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(MINTED_TOKENS);
@@ -88,19 +88,19 @@ describe("CBToken", function () {
   });
 
   describe("Burning", async () => {
-    it("Should allow the owner to burn tokens", async () => {
+    it("Should allow accounts with the burner role to burn tokens", async () => {
       expect(await token.totalSupply()).to.equal(TOKENS_AFTER_MINT);
-      expect(await token.balanceOf(owner.address)).to.equal(
+      expect(await token.balanceOf(admin.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(MINTED_TOKENS);
 
-      expect(await token.hasRole(BURNER_ROLE, owner.address)).to.equal(true);
+      expect(await token.hasRole(BURNER_ROLE, admin.address)).to.equal(true);
 
       await token.burn(accountOne.address, MINTED_TOKENS);
 
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
-      expect(await token.balanceOf(owner.address)).to.equal(
+      expect(await token.balanceOf(admin.address)).to.equal(
         INITIAL_TOTAL_SUPPLY
       );
       expect(await token.balanceOf(accountOne.address)).to.equal(0);
@@ -114,7 +114,7 @@ describe("CBToken", function () {
       );
 
       await expect(
-        token.connect(accountOne).burn(owner.address, MINTED_TOKENS)
+        token.connect(accountOne).burn(admin.address, MINTED_TOKENS)
       ).to.be.revertedWith("AccessControl");
       await expect(
         token.connect(accountOne).burn(accountOne.address, MINTED_TOKENS)
