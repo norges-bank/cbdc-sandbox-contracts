@@ -16,6 +16,9 @@ describe("CBToken", function () {
     "1000005".concat(TOTAL_SUPPLY_DECIMAL)
   );
 
+  const DEFAULT_ADMIN_ROLE =
+    "0x0000000000000000000000000000000000000000000000000000000000000000";
+
   let token: Contract;
   let owner: SignerWithAddress;
   let accountOne: SignerWithAddress;
@@ -30,9 +33,13 @@ describe("CBToken", function () {
   });
 
   describe("Deployment", async () => {
-    it("Should set the correct owner", async () => {
-      expect(await token.owner()).to.equal(owner.address);
-      expect(await token.owner()).to.not.equal(accountOne.address);
+    it("Should set the correct admin", async () => {
+      expect(await token.hasRole(DEFAULT_ADMIN_ROLE, owner.address)).to.equal(
+        true
+      );
+      expect(
+        await token.hasRole(DEFAULT_ADMIN_ROLE, accountOne.address)
+      ).to.equal(false);
     });
 
     it("Should return the correct number of decimals", async () => {
