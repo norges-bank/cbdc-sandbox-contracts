@@ -20,6 +20,7 @@ describe("CBToken", function () {
     "0x0000000000000000000000000000000000000000000000000000000000000000";
   const BURNER_ROLE = ethers.utils.id("BURNER_ROLE");
   const MINTER_ROLE = ethers.utils.id("MINTER_ROLE");
+  const ROLE = ethers.utils.id("ROLE");
 
   let token: Contract;
   let admin: SignerWithAddress;
@@ -121,6 +122,51 @@ describe("CBToken", function () {
       ).to.be.revertedWith("AccessControl");
 
       expect(await token.totalSupply()).to.equal(INITIAL_TOTAL_SUPPLY);
+    });
+  });
+
+  describe("RBAC", async () => {
+    afterEach(async () => {
+      await token.connect(admin).revokeRole(ROLE, admin.address);
+      await token.connect(admin).revokeRole(ROLE, accountOne.address);
+    });
+
+    it("should give the deployer the default admin role", async () => {
+      expect(await token.hasRole(DEFAULT_ADMIN_ROLE, admin.address)).to.equal(
+        true
+      );
+    });
+
+    it("should allow admins to grant roles", async () => {
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(false);
+      await token.connect(admin).grantRole(ROLE, accountOne.address);
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(true);
+    });
+
+    it("should not allow non-admins to grant roles", async () => {
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(false);
+      await expect(
+        token.connect(accountOne).grantRole(ROLE, accountOne.address)
+      ).to.be.revertedWith("AccessControl");
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(false);
+    });
+
+    it("should allow admin to revoke roles", async () => {
+      await token.connect(admin).grantRole(ROLE, accountOne.address);
+
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(true);
+      await token.connect(admin).revokeRole(ROLE, accountOne.address);
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(false);
+    });
+
+    it("should not allow non-admins to revoke roles", async () => {
+      await token.connect(admin).grantRole(ROLE, accountOne.address);
+
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(true);
+      await expect(
+        token.connect(accountOne).revokeRole(ROLE, accountOne.address)
+      ).to.be.revertedWith("AccessControl");
+      expect(await token.hasRole(ROLE, accountOne.address)).to.equal(true);
     });
   });
 });
