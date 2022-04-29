@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "hardhat/console.sol";
 
 contract CBToken is ERC20, AccessControl {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     address public owner;
     uint8 private _decimals;
 
@@ -20,6 +21,7 @@ contract CBToken is ERC20, AccessControl {
         console.log("Deploying a token with the name '%s', symbol '%s' and '%s' decimals.", name_, symbol_, decimals_);
         owner = msg.sender;
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
         _decimals = decimals_;
         _mint(msg.sender, 1_000_000 * (10**decimals()));
     }
@@ -28,7 +30,7 @@ contract CBToken is ERC20, AccessControl {
         return _decimals;
     }
    
-    function mint(address to, uint256 amount) external onlyOwner {
+    function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
         _mint(to, amount);
     }
 
