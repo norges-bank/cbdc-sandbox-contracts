@@ -1,5 +1,6 @@
-# cb-token
-This repository contains the ERC20 token for the Bergen project.
+# Token contract for the Norges Bank CBDC sandbox
+
+This repository contains the ERC20 token for the Norges Bank CBDC sandbox.
 
 ## Advanced Sample Hardhat Project
 
