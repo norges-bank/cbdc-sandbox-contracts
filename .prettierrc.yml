@@ -1,0 +1,14 @@
+trailingComma: es5
+tabWidth: 2
+semi: false
+singleQuote: true
+arrowParens: always
+overrides:
+  - files: '*.sol'
+    options:
+      printWidth: 100
+      tabWidth: 4
+      useTabs: false
+      singleQuote: false
+      bracketSpacing: true
+      explicitTypes: always
