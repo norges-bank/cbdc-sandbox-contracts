@@ -1,50 +1,32 @@
-# Token contract for the Norges Bank CBDC sandbox
+# Smart contracts for the Norges Bank CBDC sandbox
 
-This repository contains the ERC20 token for the Norges Bank CBDC sandbox.
+## Disclaimer
 
-## Advanced Sample Hardhat Project
+This a sandbox project and not intended for production; use at your own risk.
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+## Running locally
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+### Installation
 
-Try running some of the following tasks:
-
+The repository may be cloned locally and installation triggered as follows.
 ```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
+$ git clone git@github.com:nahmii/nb-sandbox-contracts.git
+$ cd nb-sandbox-contracts
+$ npm install --ignore-scripts
 ```
 
-## Etherscan verification
+> **_NOTE:_** The reason for installing with the `--ignore-scripts` option is first and foremost to prevent the post-install script of package _[@consensys/universal-token](https://github.com/ConsenSys/UniversalToken)_ from running. For the usage of _@consensys/universal-token_ as dependency in this project the execution of `postinstall` is obsolete.
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+### Compilation
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
+The smart contract code base may be compiled with
 ```shell
-hardhat run --network ropsten scripts/deploy.ts
+$ npm run compile
 ```
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+### Testing
 
+In order to take the smart contracts for a test drive you may invoke
 ```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
+$ npm run test
 ```
-
-## Performance optimizations
-
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
