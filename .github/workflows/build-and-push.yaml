@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: nb-sandbox-contracts
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ "master" ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  ECR_REPOSITORY: nb-sandbox-contracts
+  PREFIX: private
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-and-push-to-ecr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.PRODUCTS_ECR_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PRODUCTS_ECR_SECRET_ACCESS_KEY }}
+          aws-region: eu-central-1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$PREFIX-$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:$PREFIX-latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY -a
+      - name: Send Slack Notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          # This data can be any valid JSON from a previous step in the GitHub Action
+          payload: |
+            {
+              "repository": "${{github.repository}}",
+              "docker_tag": "${{env.IMAGE_TAG}}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_NOTIFY_WEBHOOK }}
