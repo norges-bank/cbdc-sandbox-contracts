@@ -11,15 +11,5 @@ contract CBSToken is ERC1400 {
         address[] memory controllers,
         bytes32[] memory defaultPartitions,
         uint256 chainID
-    )
-        public
-        ERC1400(
-            name,
-            symbol,
-            granularity,
-            controllers,
-            defaultPartitions,
-            chainID
-        )
-    {} // solhint-disable-line no-empty-blocks
+    ) public ERC1400(name, symbol, granularity, controllers, defaultPartitions, chainID) {} // solhint-disable-line no-empty-blocks
 }

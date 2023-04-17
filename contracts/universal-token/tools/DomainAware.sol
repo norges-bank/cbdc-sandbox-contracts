@@ -33,9 +33,7 @@ abstract contract DomainAware {
         // no need for assembly, running very rarely
         bytes32 domainSeparatorHash = keccak256(
             abi.encode(
-                keccak256(
-                    "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
-                ),
+                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
                 keccak256(bytes(domainName())), // ERC-20 Name
                 keccak256(bytes(domainVersion())), // Version
                 chainID,

@@ -1,12 +1,12 @@
 trailingComma: es5
 tabWidth: 2
-semi: false
-singleQuote: true
+semi: true
+singleQuote: false
 arrowParens: always
 overrides:
-  - files: '*.sol'
+  - files: "*.sol"
     options:
-      printWidth: 100
+      printWidth: 160
       tabWidth: 4
       useTabs: false
       singleQuote: false

@@ -1,0 +1,9 @@
+{
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "[solidity]": {
+    "editor.defaultFormatter": "NomicFoundation.hardhat-solidity"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
+}
