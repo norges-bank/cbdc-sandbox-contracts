@@ -42,7 +42,7 @@
     "lint:ts:check": "eslint . --max-warnings=0 --ext=.ts,.js",
     "lint:ts:fix": "eslint . --fix --ext=.ts,.js",
     "operator_Redeem_ERC1400": "hardhat run scripts/operator_Redeem_ERC1400.ts --network $NETWORK",
-    "test": "hardhat test",
+    "test": "hardhat test --parallel",
     "release": "release-it"
   },
   "devDependencies": {
