@@ -1,12 +1,30 @@
 {
-  "name": "nb-sandbox-contracts",
-  "author": "Nahmii AS",
-  "version": "0.1.0",
+  "name": "@symfoni/cbdc-sandbox-contracts-shared",
+  "author": "Nahmii AS & Symfoni AS",
+  "version": "0.3.28",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/symfoni/cbdc-sandbox-contracts-shared"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.mjs"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "add_CBSToken_Minter": "hardhat run scripts/add_CBSToken_Minter.ts --network $NETWORK",
     "add_CBSToken_Operator": "hardhat run scripts/add_CBSToken_Operator.ts --network $NETWORK",
     "build": "hardhat compile",
+    "prebuild": "mkdir tasksCopy || true && cp -r tasks/* tasksCopy && rm -rf tasks && mkdir tasks && touch tasks/index.ts",
+    "postbuild": "cp -r tasksCopy/* tasks && rm -rf tasksCopy",
     "clean": "hardhat clean",
     "deploy_CBToken": "hardhat run scripts/deploy_CBToken.ts --network $NETWORK",
     "deploy_CBSToken": "hardhat run scripts/deploy_CBSToken.ts --network $NETWORK",
@@ -24,18 +42,22 @@
     "lint:ts:check": "eslint . --max-warnings=0 --ext=.ts,.js",
     "lint:ts:fix": "eslint . --fix --ext=.ts,.js",
     "operator_Redeem_ERC1400": "hardhat run scripts/operator_Redeem_ERC1400.ts --network $NETWORK",
-    "prepare": "husky install",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "release": "release-it"
   },
   "devDependencies": {
+    "@banteg/disperse-research": "github:banteg/disperse-research",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.6",
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
-    "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@typechain/ethers-v5": "^10.1.0",
-    "@typechain/hardhat": "^6.1.3",
+    "@openzeppelin/contracts": "^4.2.0",
+    "@release-it/conventional-changelog": "^5.1.1",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
     "@types/chai": "^4.3.3",
     "@types/debug": "^4.1.7",
+    "@types/elliptic": "^6.4.14",
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
@@ -43,31 +65,33 @@
     "chai": "^4.3.6",
     "debug": "^4.3.4",
     "dotenv": "^16.0.3",
-    "eslint": "^8.24.0",
+    "elliptic": "^6.5.4",
+    "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.0.1",
-    "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.7.1",
+    "ethers": "^5.7.2",
     "hardhat": "^2.11.2",
     "hardhat-contract-sizer": "^2.6.1",
     "hardhat-erc1820": "^0.1.0",
     "hardhat-gas-reporter": "^1.0.9",
-    "husky": "^8.0.1",
+    "hardhat-spdx-license-identifier": "^2.1.0",
+    "mocha": "^10.1.0",
+    "noble-secp256k1": "^1.2.14",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
+    "release-it": "^15.6.0",
     "solhint": "^3.3.7",
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
+    "tsup": "^6.6.3",
     "typechain": "^8.1.0",
     "typescript": "^4.8.4"
   },
-  "dependencies": {
-    "@banteg/disperse-research": "github:banteg/disperse-research",
-    "@consensys/universal-token": "github:ConsenSys/UniversalToken",
-    "@openzeppelin/contracts": "^4.2.0"
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
