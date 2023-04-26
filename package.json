@@ -58,6 +58,7 @@
     "@types/chai": "^4.3.3",
     "@types/debug": "^4.1.7",
     "@types/elliptic": "^6.4.14",
+    "@types/keyv": "^4.2.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",

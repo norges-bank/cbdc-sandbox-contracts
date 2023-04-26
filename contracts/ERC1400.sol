@@ -14,19 +14,19 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "@consensys/universal-token/contracts/tools/ERC1820Client.sol";
-import "@consensys/universal-token/contracts/interface/ERC1820Implementer.sol";
+import "./universal-token/tools/ERC1820Client.sol";
+import "./universal-token/tools/DomainAware.sol";
+import "./universal-token/interfaces/ERC1820Implementer.sol";
 
-import "@consensys/universal-token/contracts/roles/MinterRole.sol";
+import "./universal-token/roles/MinterRole.sol";
 
-import "@consensys/universal-token/contracts/IERC1400.sol";
+import "./universal-token/IERC1400.sol";
 
 // Extensions
-import "@consensys/universal-token/contracts/extensions/tokenExtensions/IERC1400TokensValidator.sol";
-import "@consensys/universal-token/contracts/extensions/tokenExtensions/IERC1400TokensChecker.sol";
-import "@consensys/universal-token/contracts/extensions/userExtensions/IERC1400TokensSender.sol";
-import "@consensys/universal-token/contracts/extensions/userExtensions/IERC1400TokensRecipient.sol";
-import "./tools/DomainAware.sol";
+import "./universal-token/extensions/tokenExtensions/IERC1400TokensValidator.sol";
+import "./universal-token/extensions/tokenExtensions/IERC1400TokensChecker.sol";
+import "./universal-token/extensions/userExtensions/IERC1400TokensSender.sol";
+import "./universal-token/extensions/userExtensions/IERC1400TokensRecipient.sol";
 
 /**
  * @title ERC1400
