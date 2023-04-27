@@ -24,7 +24,6 @@
     "lint:ts:check": "eslint . --max-warnings=0 --ext=.ts,.js",
     "lint:ts:fix": "eslint . --fix --ext=.ts,.js",
     "operator_Redeem_ERC1400": "hardhat run scripts/operator_Redeem_ERC1400.ts --network $NETWORK",
-    "prepare": "husky install",
     "test": "hardhat test"
   },
   "devDependencies": {
@@ -63,11 +62,7 @@
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
-    "typescript": "^4.8.4"
-  },
-  "dependencies": {
-    "@banteg/disperse-research": "github:banteg/disperse-research",
-    "@consensys/universal-token": "github:ConsenSys/UniversalToken",
+    "typescript": "^4.8.4",
     "@openzeppelin/contracts": "^4.2.0"
   }
 }
