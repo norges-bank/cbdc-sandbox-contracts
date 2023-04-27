@@ -1,5 +1,11 @@
 
 
+## 0.3.31 (2023-04-27)
+
+## 0.3.30 (2023-04-27)
+
+## 0.3.29 (2023-04-27)
+
 ## [0.3.28](https://github.com/symfoni/cbdc-sandbox-contracts-shared/compare/0.3.27...0.3.28) (2023-04-14)
 
 ## [0.3.27](https://github.com/symfoni/cbdc-sandbox-contracts-shared/compare/0.3.26...0.3.27) (2023-04-14)

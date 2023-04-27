@@ -1,11 +1,14 @@
 {
   "name": "@symfoni/cbdc-sandbox-contracts-shared",
   "author": "Nahmii AS & Symfoni AS",
-  "version": "0.3.28",
+  "version": "0.3.31",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/symfoni/cbdc-sandbox-contracts-shared"
+    "url": "https://github.com/norges-bank/cbdc-sandbox-contracts.git"
   },
   "main": "./dist/index.js",
   "exports": {
@@ -16,9 +19,6 @@
   "files": [
     "dist"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "add_CBSToken_Minter": "hardhat run scripts/add_CBSToken_Minter.ts --network $NETWORK",
     "add_CBSToken_Operator": "hardhat run scripts/add_CBSToken_Operator.ts --network $NETWORK",
@@ -43,7 +43,7 @@
     "lint:ts:fix": "eslint . --fix --ext=.ts,.js",
     "operator_Redeem_ERC1400": "hardhat run scripts/operator_Redeem_ERC1400.ts --network $NETWORK",
     "test": "hardhat test --parallel",
-    "release": "release-it"
+    "release": "release-it --no-git.requireUpstream"
   },
   "devDependencies": {
     "@banteg/disperse-research": "github:banteg/disperse-research",
