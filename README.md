@@ -9,29 +9,34 @@ This a sandbox project and not intended for production; use at your own risk.
 ### Installation
 
 The repository may be cloned locally and installation triggered as follows.
+
 ```shell
 git clone git@github.com:norges-bank/cbdc-sandbox-contracts.git
 cd cbdc-sandbox-contracts
 npm install
 ```
 
-> **_NOTE:_** The reason for installing with the `--ignore-scripts` option is first and foremost to prevent the post-install script of package _[@consensys/universal-token](https://github.com/ConsenSys/UniversalToken)_ from running. For the usage of _@consensys/universal-token_ as dependency in this project the execution of `postinstall` is obsolete.
-
 ### Compilation
 
 The smart contract code base may be compiled with
+
 ```shell
-npm run compile
+npx hardhat compile
 ```
 
 ### Testing
 
 In order to take the smart contracts for a test drive you may invoke
 
-In order to take the smart contracts for a test drive you may invoke
 ```shell
 npx hardhat test --parallel
 ```
+
+### Environment
+
+You need to setup env variables. Copy .env.example to .env and ask another project member for suggested values or fill them out:
+
+`cp .env.example .env`
 
 #### Development
 
@@ -41,9 +46,6 @@ To run development environment with hardhat `Cmd + Shift + P` and select `Tasks:
 
 To release NPM package, do
 
-- Create an .npmrc file and add this line `//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN`
-- Create a token at [https://github.com/settings/tokens](https://github.com/settings/tokens)
-- In .npmrc, change YOUR_AUTH_TOKEN with your generated token.
 - `Cmd + Shift + P`,
 - select `Tasks: Run Task` and
 - select `release`
@@ -62,10 +64,10 @@ npx hardhat generate-npm-package
 
 This is automatically invoked as part of the `npm hardhat deploy-all --network […]` and `npx hardhat release` (all networks) command.
 
-### Use in local development
+### Use package in other local repo
 
-Edit package.json dependency of your repot to point to this repo. Like this (one level up), if the two projects foleders reside side by side.
+Edit package.json dependency in other local repo to point to this folder. Like this (one level up), if the two projects foleders reside side by side.
 
 ```json
-    "@symfoni/cbdc-contracts": "file:../cbdc-sandbox-contracts-shared",
+    "@symfoni/cbdc-sandbox-contracts-shared": "file:../cbdc-sandbox-contracts",
 ```
