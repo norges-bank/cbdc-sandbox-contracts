@@ -71,3 +71,22 @@ Edit package.json dependency in other local repo to point to this folder. Like t
 ```json
     "@symfoni/cbdc-sandbox-contracts-shared": "file:../cbdc-sandbox-contracts",
 ```
+
+## Setup full sandbox CBDC ecosystem
+
+The latest sandbox iteration of the CBDC ecosystem comprises the following components:
+
+1. [Contracts](https://github.com/norges-bank/cbdc-sandbox-contracts): Encompasses smart contracts, a localized blockchain, and a deployment system.
+2. [Frontend-v2](https://github.com/norges-bank/cbdc-sandbox-frontend-v2): Features a web-based user interface for token management, as well as a server dedicated to verifying verfiable credentials.
+3. [VC-Issuer](https://github.com/norges-bank/cbdc-sandbox-vc-issuer): Consists of a web frontend that allows users to log in through ID-porten, accompanied by a backend responsible for issuing verfiable credentials.
+4. [Contact Registry](https://github.com/norges-bank/cbdc-sandbox-contact-registry): This section includes a database and backend infrastructure, enabling applications to efficiently query contacts as needed.
+
+To set up each component, follow the instructions provided in their respective repositories.
+
+1. Begin by configuring the contracts. Start the local blockchain and deploy the smart contracts accordingly.
+
+2. Next, establish the VC-issuer. The URL for this application will be utilized within frontend-v2, directing users to a location where they can obtain verifiable credentials.
+
+3. Proceed to set up the contact-registry. Frontend-v2 will utilize its URL in the user interface to enable contact queries based on phone numbers, IDs, or email addresses.
+
+4. Finally, configure frontend-v2 using the URLs obtained during the VC-issuer and contact-registry setup processes. By default, the frontend will employ a [published package from the contracts project](https://www.npmjs.com/package/@symfoni/cbdc-sandbox-contracts-shared). To release new packages, use the contracts repository. The contracts deployed on the local blockchain are deterministic, ensuring that smart contracts retain the same addresses (though certain alterations may result in changes, such as the order of deployed addresses).
