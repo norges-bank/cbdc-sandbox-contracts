@@ -34,7 +34,7 @@ npx hardhat test --parallel
 
 ### Environment
 
-You need to setup env variables. Copy .env.example to .env and ask another project member for suggested values or fill them out:
+To configure environment variables, create a copy of the .env.example file and rename it to .env. You can obtain recommended values from a fellow project member, or input them yourself:
 
 `cp .env.example .env`
 
