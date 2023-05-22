@@ -1,0 +1,111 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Scenario: Interest Flow with two users",
+      "detail": "Use in combination with dsp-wallet test/interestFlow…",
+      "type": "shell",
+      "command": "npx hardhat test test/interestFlowWithTwoUsers.ts",
+      "isBackground": true,
+      "dependsOn": [
+        "dev"
+      ]
+      // det er kanskje mintet allerede? Da er det bare å overføre til bruker 1 og 2
+    },
+    {
+      "label": "dev",
+      "detail": "Run project locally",
+      "runOptions": {
+        // "runOn": "folderOpen"
+      },
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "contracts localhost"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "node",
+      "type": "shell",
+      "command": "npx hardhat node",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "change detected",
+          "endsPattern": "These accounts, and their private keys, are publicly known"
+        }
+      },
+      "detail": "Run hardhat local dev blockchain",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "hardhat"
+      }
+    },
+    {
+      "label": "contracts localhost",
+      "type": "shell",
+      "command": "DEBUG=dsp* npx hardhat deploy-all --network localhost --dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Deploy all contracts localhost",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "hardhat"
+        // "close": true
+      },
+      "dependsOn": [
+        "node"
+      ]
+    },
+    {
+      "label": "contracts mainnet",
+      "type": "shell",
+      "command": "DEBUG=dsp* npx hardhat deploy-all --network mainnet --dev",
+      "isBackground": true,
+      "problemMatcher": [],
+      "detail": "Deploy all contracts mainnet",
+      "presentation": {
+        "panel": "dedicated",
+        "group": "hardhat"
+        // "close": true
+      },
+      "dependsOn": []
+    },
+    {
+      "label": "release",
+      "type": "shell",
+      "command": "npm run release",
+      "isBackground": false,
+      "problemMatcher": [],
+      "detail": "Deploy all and release",
+      "dependsOn": [
+        "contracts mainnet",
+        "contracts localhost"
+      ]
+    },
+    {
+      "label": "Fast forward",
+      "type": "shell",
+      "command": "npx hardhat fast-forward ${input:time} --network localhost --dev",
+      "isBackground": true,
+      "detail": "Fast forward the chain x amount time"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "time",
+      "description": "1 day; 2 weeks; 3 months; 4 years",
+      "default": "1 week",
+      "type": "promptString"
+    }
+  ]
+}

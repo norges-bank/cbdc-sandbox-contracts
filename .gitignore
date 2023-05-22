@@ -8,7 +8,10 @@ coverage
 coverage.json
 typechain
 typechain-types
+dist
 
 #Hardhat files
 cache
 artifacts
+.DS_Store
+.npmrc

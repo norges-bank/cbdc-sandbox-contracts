@@ -20,5 +20,9 @@ module.exports = {
       "error",
       { ignores: ["modules"] },
     ],
+    "node/no-missing-import": "off", // need this for eslint and ts to work together in hardhat config.
+    "no-unused-expressions": "off", // need this for how chai does assertions
+    "node/no-unpublished-import": "off", // need this for how to work with hardhat imports in preHardhatRuntime, see tests
+    camelcase: "off", // need this because how typechain names generated files
   },
 };
